@@ -4,21 +4,33 @@ import { RectButtonProperties } from 'react-native-gesture-handler';
 import { AntDesign } from '@expo/vector-icons';
 import { Image, View } from 'react-native';
 import theme from '../../global/theme';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 interface UserProps {
-    avatar_url?: string;
-    name?: string;
+    data: {
+        id: number;
+        login: string;
+        avatar_url: string;
+    },
+    path: string;
+
 }
 
-const UserCard: React.FC<UserProps> = ({ avatar_url, name }: UserProps) => {
+
+const UserCard: React.FC<UserProps> = ({ data, path, ...rest }: UserProps) => {
+
+    const navigation = useNavigation();
+
+    async function handleSelect(username: string) {
+        navigation.navigate('User', { username });
+    }
     return (
         <>
-            <S.Container>
-                <S.Avatar source={{ uri: 'https://avatars.githubusercontent.com/u/52255226?v=4' }} />
-                <S.CardName>#rubensmk</S.CardName>
-                <S.Button>
+            <S.Container key={data.id} {...rest}>
+                <S.Avatar source={{ uri: `${data.avatar_url}` }} />
+                <S.CardName>#{data.login}</S.CardName>
+                <S.Button onPress={() => handleSelect(data.login)}>
                     <AntDesign name="arrowright" color={theme.colors.text} size={18} />
                 </S.Button>
             </S.Container>

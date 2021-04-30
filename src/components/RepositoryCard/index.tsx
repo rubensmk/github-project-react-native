@@ -9,21 +9,23 @@ import theme from '../../global/theme';
 
 interface RepositoryProps extends RectButtonProperties {
     data: {
+        id: number;
         name: string;
+        stargazers_count: number;
         description: string;
-        stars: number;
     }
 }
 
 const RepositoryCard: React.FC<RepositoryProps> = ({ data, ...rest }: RepositoryProps) => {
     return (
         <>
-            <S.Container {...rest}>
-                <S.CardTitle>brasiliapp-react-native</S.CardTitle>
-                <S.CardDescription>Repository for centralization of the BrasiliApp mobile project</S.CardDescription>
+            <S.Container>
+                <S.Tag />
+                <S.CardTitle>{data.name}</S.CardTitle>
+                <S.CardDescription>{data.description}</S.CardDescription>
                 <S.Stars>
                     <Feather name="star" size={18} color={theme.colors.yellow} />
-                    <S.StarsCount>32</S.StarsCount>
+                    <S.StarsCount>{data.stargazers_count}</S.StarsCount>
                 </S.Stars>
             </S.Container>
             <View>

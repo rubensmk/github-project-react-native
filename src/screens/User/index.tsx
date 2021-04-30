@@ -3,27 +3,60 @@ import * as S from './styles';
 import { Text, StatusBar, View } from 'react-native';
 import theme from '../../global/theme';
 import { Feather } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { UserContext } from '../../contexts/UserContext';
+import api from '../../services/api';
+
+interface Params {
+    username: string;
+}
+
+interface OtherProfileProps {
+    name: string;
+    email: string;
+    login: string;
+    id: number;
+    avatar_url: string;
+    location: string;
+    followers: number;
+    following: number;
+    public_repos: number;
+    bio: string;
+}
+
+const User: React.FC = () => {
+    const navigation = useNavigation();
+    const route = useRoute();
+    const { username } = route.params as Params;
+    const { signIn } = useContext(UserContext);
+
+    const [currentProfile, setCurrentProfile] = useState<OtherProfileProps[]>([]);
 
 
-const Home: React.FC = () => {
-    const { user } = useContext(UserContext);
-    const { navigate } = useNavigation();
-    const [loading, setLoading] = useState(false);
-
+    async function handleChangeAccount() {
+        signIn(username);
+        navigation.navigate('Home');
+    }
     useEffect(() => {
-    }, []);
+
+        async function getProfile() {
+            const response = await api.get(`/users/${username}`);
+            setCurrentProfile([response.data]);
+        }
+
+        getProfile();
+
+    }, [])
     return (
         <>
-            {user.map(profile => (
+            {currentProfile.map(profile => (
                 <S.Container key={profile.id}>
                     <StatusBar backgroundColor={theme.colors.header} />
                     <S.Header>
                         <S.HeaderTitle>#{profile.login}</S.HeaderTitle>
-                        <S.HeaderLogOut onPress={() => navigate('Auth')}>
-                            <Text style={{ fontSize: 15, color: '#fdfdfd', marginRight: 10 }}>Sair</Text>
-                            <Feather name="log-out" size={18} color={theme.colors.red} />
+                        <S.HeaderLogOut onPress={() => handleChangeAccount()}>
+                            <Text style={{ fontSize: 15, color: '#fdfdfd', marginRight: 10 }}>Salvar</Text>
+                            <Feather name="log-in" size={18} color='green' />
                         </S.HeaderLogOut>
                         <S.Avatar source={{ uri: `${profile.avatar_url}` }} />
                     </S.Header>
@@ -31,7 +64,7 @@ const Home: React.FC = () => {
                     <S.Profile>
                         <S.Tag />
                         <S.Name>{profile.name}</S.Name>
-                        <S.Email>{profile.email} </S.Email>
+                        <S.Email>{profile.email}</S.Email>
                         <S.Address>{profile.location}</S.Address>
                     </S.Profile>
                     <S.Status>
@@ -56,8 +89,7 @@ const Home: React.FC = () => {
                 </S.Container>
             ))}
         </>
-
     );
 };
 
-export default Home;
+export default User;

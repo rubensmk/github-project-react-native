@@ -17,4 +17,7 @@ export const HeaderTitle = styled.Text`
 	font-weight:bold;
 	color:${theme.colors.text};
 `;
-export const Button = styled.TouchableOpacity``;
+export const Button = styled.TouchableOpacity`
+	position:relative;
+	right:100px;
+`;

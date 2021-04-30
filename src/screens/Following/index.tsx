@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import * as S from './styles';
 import UserCard from '../../components/UserCard';
 import Header from '../../components/Header';
+import { UserContext } from '../../contexts/UserContext';
 
 const Following: React.FC = () => {
+    const { following, user } = useContext(UserContext);
 
     return (
         <S.Container>
-            <Header />
-            <S.ListFollowing keyExtractor={((item) => String(item.id))} data={[{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }]} renderItem={({ item }) => (
-                <UserCard />
+            <Header count={user[0].following} type="seguindo" />
+            <S.ListFollowing keyExtractor={((item) => String(item.id))} data={following} renderItem={({ item }) => (
+                <UserCard data={item} path={'User'} />
             )}
                 showsHorizontalScrollIndicator={false}
             />

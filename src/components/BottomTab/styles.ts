@@ -1,12 +1,13 @@
 import styled from 'styled-components/native';
 import { } from 'react-native-gesture-handler';
+import theme from '../../global/theme';
 
 export const Background = styled.View`
 	height: 0;
 `;
 
 export const Container = styled.View`
-	height: 80px;
+	height:80px;
 	border-top-left-radius: 30px;
 	border-top-right-radius: 30px;
 	background-color: #fff;
@@ -25,4 +26,5 @@ export const Button = styled.TouchableOpacity.attrs({
 export const ButtonText = styled.Text`
 	margin-top: 5px;
 	margin-bottom:7px;
+	color:${theme.colors.background};
 `;
