@@ -4,23 +4,23 @@ import api from '../services/api';
 
 
 interface Profile {
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
     login: string;
     id: number;
     avatar_url: string;
-    location: string;
+    location?: string;
     followers: number;
     following: number;
     public_repos: number;
-    bio: string;
+    bio?: string;
 }
 
 interface Repository {
     id: number;
     name: string;
     stargazers_count: number;
-    description: string;
+    description?: string;
 }
 
 interface Followers {
@@ -40,6 +40,7 @@ interface UserProviderData {
     repos: Repository[];
     followers: Followers[];
     following: Following[];
+    loading: boolean;
     signIn: (arg: string) => void;
 }
 
@@ -56,9 +57,11 @@ export function UserProvider({ children }: UserProviderProps) {
     const [repos, setRepos] = useState<Repository[]>([]);
     const [followers, setFollowers] = useState<Followers[]>([]);
     const [following, setFollowing] = useState<Following[]>([]);
+    const [loading, setLoading] = useState(false);
 
     async function signIn(username: string) {
 
+        setLoading(true);
         const responseProfile = await api.get(`/users/${username}`);
         const responseRepos = await api.get(`/users/${username}/repos`);
         const responseFollowers = await api.get(`/users/${username}/followers`);
@@ -68,11 +71,11 @@ export function UserProvider({ children }: UserProviderProps) {
         setRepos(responseRepos.data);
         setFollowers(responseFollowers.data);
         setFollowing(responseFollowing.data);
-
+        setLoading(false);
     }
 
     return (
-        <UserContext.Provider value={{ signIn, user, repos, followers, following }}>
+        <UserContext.Provider value={{ signIn, user, repos, followers, following, loading }}>
             { children}
         </UserContext.Provider >
     )

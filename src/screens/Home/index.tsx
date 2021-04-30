@@ -5,15 +5,21 @@ import theme from '../../global/theme';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../contexts/UserContext';
+import Load from '../../components/Load';
 
 
 const Home: React.FC = () => {
-    const { user } = useContext(UserContext);
+    const { user, loading } = useContext(UserContext);
     const { navigate } = useNavigation();
-    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
+        console.log(loading);
     }, []);
+
+    if (loading) {
+        return <Load />
+    }
     return (
         <>
             {user.map(profile => (
@@ -30,9 +36,9 @@ const Home: React.FC = () => {
 
                     <S.Profile>
                         <S.Tag />
-                        <S.Name>{profile.name}</S.Name>
-                        <S.Email>{profile.email} </S.Email>
-                        <S.Address>{profile.location}</S.Address>
+                        <S.Name>{profile.name ?? profile.login}</S.Name>
+                        <S.Email>{profile.email ?? 'E-mail não informado'} </S.Email>
+                        <S.Address>{profile.location ?? 'Localização não informada'}</S.Address>
                     </S.Profile>
                     <S.Status>
                         <S.Followers>
@@ -51,7 +57,7 @@ const Home: React.FC = () => {
                     <S.Bio>
                         <S.Tag />
                         <S.BioTitle>BIO</S.BioTitle>
-                        <S.BioDescription>{profile.bio}</S.BioDescription>
+                        <S.BioDescription>{profile.bio ?? 'Sem descrição'}</S.BioDescription>
                     </S.Bio>
                 </S.Container>
             ))}

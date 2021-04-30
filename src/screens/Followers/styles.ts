@@ -19,6 +19,7 @@ export const ListFollowers = styled(FlatList as new () => FlatList)`
 export const Content = styled.View`
 	flex-direction:row;
 	justify-content:center;
+	align-items:center;
 `;
 export const Button = styled.TouchableOpacity`
 `;

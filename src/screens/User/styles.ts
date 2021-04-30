@@ -20,18 +20,14 @@ export const Header = styled.View`
 	justify-content:space-between; 
 	padding-top:10px;
 `;
-export const HeaderTitle = styled.Text`
-	margin-left:20px;
-	font-size:20px;
-	font-weight:bold;
-	color:${theme.colors.text};
 
-`;
 export const HeaderLogOut = styled.TouchableOpacity`
 	margin-right:20px;
 	flex-direction:row;
 `;
-
+export const Button = styled.TouchableOpacity`
+	margin-left:20px;
+`;
 export const Avatar = styled.Image`
 	width:150px;
 	height:150px;

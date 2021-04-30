@@ -15,7 +15,7 @@ export const Container = styled.View`
 
 export const CardName = styled.Text`
     color: ${theme.colors.text};
-    font-size:16px;
+    font-size:14px;
     font-weight:bold;
 `;
 

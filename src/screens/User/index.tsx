@@ -5,6 +5,7 @@ import theme from '../../global/theme';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { UserContext } from '../../contexts/UserContext';
+import { AntDesign } from '@expo/vector-icons';
 import api from '../../services/api';
 
 interface Params {
@@ -12,16 +13,16 @@ interface Params {
 }
 
 interface OtherProfileProps {
-    name: string;
-    email: string;
+    name?: string;
+    email?: string;
     login: string;
     id: number;
     avatar_url: string;
-    location: string;
+    location?: string;
     followers: number;
     following: number;
     public_repos: number;
-    bio: string;
+    bio?: string;
 }
 
 const User: React.FC = () => {
@@ -35,6 +36,7 @@ const User: React.FC = () => {
 
     async function handleChangeAccount() {
         signIn(username);
+        navigation.navigate('Followers');
         navigation.navigate('Home');
     }
     useEffect(() => {
@@ -53,7 +55,9 @@ const User: React.FC = () => {
                 <S.Container key={profile.id}>
                     <StatusBar backgroundColor={theme.colors.header} />
                     <S.Header>
-                        <S.HeaderTitle>#{profile.login}</S.HeaderTitle>
+                        <S.Button onPress={() => navigation.navigate('Followers')}>
+                            <AntDesign name="arrowleft" color={theme.colors.text} size={18} />
+                        </S.Button>
                         <S.HeaderLogOut onPress={() => handleChangeAccount()}>
                             <Text style={{ fontSize: 15, color: '#fdfdfd', marginRight: 10 }}>Salvar</Text>
                             <Feather name="log-in" size={18} color='green' />
@@ -63,9 +67,9 @@ const User: React.FC = () => {
 
                     <S.Profile>
                         <S.Tag />
-                        <S.Name>{profile.name}</S.Name>
-                        <S.Email>{profile.email}</S.Email>
-                        <S.Address>{profile.location}</S.Address>
+                        <S.Name>{profile.name ?? profile.login}</S.Name>
+                        <S.Email>{profile.email ?? 'E-mail não informado'}</S.Email>
+                        <S.Address>{profile.location ?? 'Localização não informada'}</S.Address>
                     </S.Profile>
                     <S.Status>
                         <S.Followers>
@@ -84,7 +88,7 @@ const User: React.FC = () => {
                     <S.Bio>
                         <S.Tag />
                         <S.BioTitle>BIO</S.BioTitle>
-                        <S.BioDescription>{profile.bio}</S.BioDescription>
+                        <S.BioDescription>{profile.bio ?? 'Sem descrição'}</S.BioDescription>
                     </S.Bio>
                 </S.Container>
             ))}

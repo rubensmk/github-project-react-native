@@ -22,7 +22,7 @@ const RepositoryCard: React.FC<RepositoryProps> = ({ data, ...rest }: Repository
             <S.Container>
                 <S.Tag />
                 <S.CardTitle>{data.name}</S.CardTitle>
-                <S.CardDescription>{data.description}</S.CardDescription>
+                <S.CardDescription>{data.description ?? 'Sem descrição'}</S.CardDescription>
                 <S.Stars>
                     <Feather name="star" size={18} color={theme.colors.yellow} />
                     <S.StarsCount>{data.stargazers_count}</S.StarsCount>
